@@ -51,7 +51,7 @@ router.post('/check',
  */
 
 router.post('/login',
-  body({ email, password }),
+  body({ name, password }),
   login)
 
 /**
@@ -92,7 +92,6 @@ router.post('/login',
  */
 
 router.post('/register',
-  master(),
   body({ email, password, name }),
   register)
 
