@@ -8,6 +8,12 @@ export default async ({ bodymen: { body: { name } } }, res, next) => {
 
     // если юзер не найден, отправляем false
     if (!user) {
+      let battleTag = name.split('#');
+
+      if (battleTag.length !== 2 || battleTag[0].length < 3 || battleTag[0].length > 12 || !/^\d+$/.test(battleTag[1])) {
+        return res.sendError(400, 'Wrong battle tag')
+      }
+
       return res.sendError(404, 'User not found')
     }
 
