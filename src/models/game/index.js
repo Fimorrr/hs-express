@@ -1,6 +1,17 @@
 import mongoose, { Schema } from 'mongoose'
 import { env } from '../../config'
 
+/*
+  Статусы:
+0) Search показывать время
+1) Waiting показывать время
+2) Game
+3) Dispute
+4) Completed
+5) Cancelled
+6) Abandoned
+*/
+
 const gameSchema = new Schema({
   status: {
     type: Number,
@@ -29,12 +40,12 @@ const gameSchema = new Schema({
 
   startedAt: {
     type: Date,
-    default: Date.now(),
+    default: Date.now,
   },
 
   changedAt: {
     type: Date,
-    default: Date.now(),
+    default: Date.now,
   },
 }, {
   timestamps: false
