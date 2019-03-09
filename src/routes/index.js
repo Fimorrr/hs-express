@@ -2,6 +2,7 @@ import { Router } from 'express'
 import auth from './auth'
 import users from './users'
 import test from './test'
+import game from './game'
 import { sendError, sendSuccess } from '../middlewares'
 import swaggerJSDoc from 'swagger-jsdoc'
 import swaggerUi from 'swagger-ui-express'
@@ -47,6 +48,7 @@ router.use(sendSuccess)
 router.use('/auth', auth)
 router.use('/users', users)
 router.use('/test', test)
+router.use('/game', game)
 router.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
 export default router

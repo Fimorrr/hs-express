@@ -19,14 +19,29 @@ const userSchema = new Schema({
     type: String,
     trim: true,
     default: null
-  }
+  },
+
+  rating: {
+    type: Number,
+    default: 0
+  },
+
+  banned: {
+    type: Date,
+    default: null
+  },
+
+  games: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Game',
+  }]
 }, {
   timestamps: true
 })
 
 userSchema.methods = {
   view () {
-    let fields = ['id', 'name', 'email', 'picture', 'createdAt']
+    let fields = ['name', 'email', 'rating', 'banned', 'createdAt']
 
     const view = fields.reduce((view, field) => {
       view[field] = this[field]
