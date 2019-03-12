@@ -10,6 +10,12 @@ import { env } from '../../config'
 4) Completed
 5) Cancelled
 6) Abandoned
+
+  Опции:
+0) Все отлично
+1) Игра отменена, не удалось сыграть
+2) Открыть спор, игрок кинул
+
 */
 
 const gameSchema = new Schema({
@@ -36,6 +42,16 @@ const gameSchema = new Schema({
   partnerSubmit: {
     type: Boolean,
     default: false
+  },
+
+  creatorOption: {
+    type: Number,
+    default: -1,
+  },
+
+  partnerOption: {
+    type: Number,
+    default: -1,
   },
 
   startedAt: {
