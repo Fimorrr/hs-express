@@ -2,18 +2,34 @@ import User from '../../../models/user'
 import Game from '../../../models/game'
 
 const getSubmit = (game, user) => {
-  if (game.creator === user.id) {
+  if (game.creator == user.id) {
     if (game.status == 1 && game.creatorSubmit) { //высылаем submit при подтверждении игры
       return true;
     } else if (game.status == 2 && game.creatorOption >= 0) {
       return true;
     }
   }
-  else if (game.partner === user.id) {
+  else if (game.partner == user.id) {
     if (game.status == 1 && game.partnerSubmit) { //высылаем submit при подтверждении игры
       return true;
     } else if (game.status == 2 && game.partnerOption >= 0) {
       return true;
+    }
+  }
+}
+
+const getOpponent = async (game, user) => {
+  if (game.status == 2) {
+    let opponent;
+    if (game.creator == user.id) {
+      opponent = await User.findOne(game.partner);
+    }
+    else if (game.partner == user.id) {
+      opponent = await User.findOne(game.creator);
+    }
+
+    if (opponent) {
+      return opponent.name;
     }
   }
 }
@@ -36,10 +52,13 @@ export default async ({ user }, res, next) => {
         time = (Date.now() - lastGame.changedAt.getTime()) / 1000;
       }
 
+      const opponent = await getOpponent(lastGame, user);
+
       return res.sendSuccess({ game: { 
         status: lastGame.status,
         submit: getSubmit(lastGame, user),
         time,
+        opponent,
       } });
     } 
 
