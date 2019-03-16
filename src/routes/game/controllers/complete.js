@@ -5,12 +5,14 @@ const setStatus = async (option1, option2, game) => {
   if (option1 == 0 && option2 == 0) { //Все отлично у обоих игроков
     await game.set({ status: 4 });
   }
-  else if (option1 == 2 || option2 == 2) {
+  else if (option1 == 2 || option2 == 2) { //Один из игроков недоволен - открываем спор
     await game.set({ status: 3 });
+  }
+  else if (option1 == 1 || option2 == 1) { //Один из игроков отменил игру
+    await game.set({ status: 5 });
   }
 
   await game.save();
-  console.log(game);
 }
 
 export default async ({ user, bodymen: { body: { option } } }, res, next) => {
