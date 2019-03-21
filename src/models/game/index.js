@@ -54,6 +54,16 @@ const gameSchema = new Schema({
     default: -1,
   },
 
+  creatorPictures: [{
+    type: String,
+    default: null,
+  }],
+
+  partnerPictures: [{
+    type: String,
+    default: null,
+  }],
+
   startedAt: {
     type: Date,
     default: Date.now,

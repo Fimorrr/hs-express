@@ -5,6 +5,7 @@ import getLast from './getLast'
 import complete from './complete'
 import checkPicture from './checkPicture'
 import savePicture from './savePicture'
+import getPicture from './getPicture'
 
 export {
   search,
@@ -14,4 +15,5 @@ export {
   complete,
   checkPicture,
   savePicture,
+  getPicture,
 }

@@ -1,22 +1,33 @@
 import { Router } from 'express'
 import multer from 'multer'
-import path from 'path';
-import { getLast, search, cancel, confirm, complete, checkPicture, savePicture } from './controllers'
+import path from 'path'
+import { getLast, search, cancel, confirm, complete, checkPicture, savePicture, getPicture } from './controllers'
 import { middleware as body } from 'bodymen'
 import { token } from '../../services/passport'
 import { schema } from '../../models/game'
 
 const router = new Router()
 
-var upload = multer({
-  dest: __dirname + '/../../public/uploads/',
+let storage = multer.diskStorage({
+  destination: (req, file, next) => {
+    next(null, __dirname + '/../../public/uploads/');
+  },
+  filename: (req, file, next) => {
+    let name = Math.random().toString().slice(8) + Date.now() + path.extname(file.originalname);
+    next(null, name);
+  }
+});
+
+let upload = multer({
+  storage: storage,
   fileFilter: (req, file, next) => {
     let ext = path.extname(file.originalname);
-    console.log(ext);
     if (ext == '.jpg' || ext == '.jpeg' || ext == '.png') {
       next(null, true);
     }
-    next(null, false);  
+    else {
+      next(null, false);  
+    }
   },
   limits: {
     fileSize: 1024 * 1024
@@ -49,9 +60,13 @@ router.post('/complete',
   complete)
 
 router.post('/upload',
-  token({ required: false }),
+  token({ required: true }),
   checkPicture,
   upload.single('picture'),
-  savePicture);
+  savePicture)
+
+router.get('/picture/:number',
+  token({ required: false }),
+  getPicture)
 
 export default router
