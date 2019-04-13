@@ -1,5 +1,6 @@
 import User from '../../../models/user'
 import Game from '../../../models/game'
+import { getLastGame, isCreator } from '../../../middlewares'
 
 const getSubmit = (game, user) => {
   if (game.creator == user.id) {
@@ -54,11 +55,28 @@ export default async ({ user }, res, next) => {
 
       const opponent = await getOpponent(lastGame, user);
 
+      let images; //Количество изображений в споре
+
+      const creator = isCreator(user, lastGame);
+
+      if (lastGame.status == 3) {
+        if (creator == null) {
+          return res.sendError(404, 'Wrong game');
+        }
+        else if (creator) {
+          images = lastGame.creatorPictures.length;
+        }
+        else {
+          images = lastGame.partnerPictures.length;
+        }
+      }
+
       return res.sendSuccess({ game: { 
         status: lastGame.status,
         submit: getSubmit(lastGame, user),
         time,
         opponent,
+        images,
       } });
     } 
 
